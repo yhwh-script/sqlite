@@ -1,0 +1,35 @@
+{
+    "author": "Jahrome <yhwhscript@gmail.com>",
+    "dependencies": {
+        "@sqlite.org/sqlite-wasm": "^3.48.0-build1",
+        "@vitejs/plugin-basic-ssl": "^1.2.0",
+        "vite": "^6.0.11"
+    },
+    "description": "This is a SQLite module for yhwh-script.",
+    "keywords": [
+        "CustomElements",
+        "JavaScript",
+        "SFC",
+        "Single File Components",
+        "Vanilla",
+        "WebComponents"
+    ],
+    "license": "Unlicense",
+    "main": "index.js",
+    "name": "@yhwh-script/sqlite",
+    "version": "0.9.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yhwh-script/sqlite.git"
+    },
+    "bugs": {
+      "url": "https://github.com/yhwh-script/sqlite/issues"
+    },
+    "homepage": "https://github.com/yhwh-script/sqlite#readme",
+    "scripts": {
+        "dev": "npm run gen && vite",
+        "gen": "node gen.cjs",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "type": "module"
+}
