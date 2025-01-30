@@ -4,6 +4,22 @@ import { log, error } from '../../modules/Logger.js'
 let dbInstance = null;
 let sqlite3 = null;
 
+(function () {
+    sqlite3InitModule({
+        print: log,
+        printErr: error,
+    }).then((sqlite) => {
+        sqlite3 = sqlite;
+        try {
+            log('Running SQLite3 version', sqlite3.version.libVersion);
+            if ('opfs' in sqlite3) dbInstance = new sqlite3.oo1.OpfsDb('/local.sqlite3', 'c'); else throw new Error("OPFS is not available.");
+            log('OPFS is available, created persisted database at', dbInstance.filename);
+        } catch (err) {
+            error(err.name, err.message);
+        }
+    });
+})()
+
 function getDB() {
     return new Promise((resolve) => {
         const checkAgain = function () {
@@ -12,20 +28,6 @@ function getDB() {
         checkAgain();
     });
 }
-
-sqlite3InitModule({
-    print: log,
-    printErr: error,
-}).then((sqlite) => {
-    sqlite3 = sqlite;
-    try {
-        log('Running SQLite3 version', sqlite3.version.libVersion);
-        if ('opfs' in sqlite3) dbInstance = new sqlite3.oo1.OpfsDb('/local.sqlite3', 'c'); else throw new Error("OPFS is not available.");
-        log('OPFS is available, created persisted database at', dbInstance.filename);
-    } catch (err) {
-        error(err.name, err.message);
-    }
-});
 
 onmessage = async function dispatch({ data }) {
     const db = await getDB();
@@ -50,11 +52,12 @@ onmessage = async function dispatch({ data }) {
                     error(e);
             }
             break;
-        case "exec":
+        case "exec": {
             log(data.sql);
-            const result = db.exec({ sql: data.sql, returnValue: data.returnValue });
-            postMessage({ result, type: "application/json", datasetID: data.datasetID });
+            const result = await db.exec({ sql: data.sql, returnValue: data.returnValue });
+            postMessage({ timestamp: data.timestamp, result: this.structuredClone(result), type: "application/json" });
             break;
+        }
         default:
             log(data)
     }

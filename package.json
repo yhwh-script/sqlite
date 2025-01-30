@@ -5,7 +5,7 @@
         "@vitejs/plugin-basic-ssl": "^1.2.0",
         "vite": "^6.0.11"
     },
-    "description": "This is a SQLite module for yhwh-script.",
+    "description": "This is a SQLite module for @yhwh-script/elements",
     "keywords": [
         "CustomElements",
         "JavaScript",
@@ -17,7 +17,7 @@
     "license": "Unlicense",
     "main": "index.js",
     "name": "@yhwh-script/sqlite",
-    "version": "0.9.0",
+    "version": "1.0.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/yhwh-script/sqlite.git"
