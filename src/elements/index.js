@@ -1,0 +1,1 @@
+export const htmlFiles=["elements/sqlite/sqlite-control.html"];

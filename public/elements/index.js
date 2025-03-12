@@ -1,0 +1,1 @@
+export const htmlFiles=["elements/animals/animals-li.html","elements/animals/animals-view.html","elements/home/home-app.html","elements/home/home-header.html","elements/home/home-navigation.html","elements/home/home-switch.html","elements/quick/quick-delete.html"];

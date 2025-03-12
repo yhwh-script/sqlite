@@ -1,1 +1,0 @@
-export const elements={"sqlite":[{"suffix":"control","filePath":"elements\\sqlite\\sqlite-control.html"}]};
