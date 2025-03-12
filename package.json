@@ -1,4 +1,8 @@
 {
+    "author": "Jahrome <yhwhscript@gmail.com>",
+    "bugs": {
+        "url": "https://github.com/yhwh-script/sqlite/issues"
+    },
     "devDependencies": {
         "@vitejs/plugin-basic-ssl": "^2.0.0",
         "vite": "^6.2.0"
@@ -7,6 +11,7 @@
         "@sqlite.org/sqlite-wasm": "^3.49.1-build2"
     },
     "description": "This is a @yhwh-script app with SQLite support.",
+    "homepage": "https://github.com/yhwh-script/sqlite#readme",
     "keywords": [
         "CSS",
         "CustomElements",
@@ -21,6 +26,14 @@
         "WebComponents"
     ],
     "license": "Unlicense",
+    "name": "@yhwh-script/sqlite",
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yhwh-script/sqlite.git"
+    },
     "scripts": {
         "dev": "npm run gen && vite",
         "gen": "node gen.cjs",
@@ -28,5 +41,5 @@
         "preview": "vite preview"
     },
     "type": "module",
-    "version": "1.1.0"
+    "version": "1.2.7"
 }
