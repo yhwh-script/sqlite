@@ -3,7 +3,7 @@ import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 // https://www.npmjs.com/package/@sqlite.org/sqlite-wasm
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
 
-export const moduleName = "sqlite";
+export const name = "sqlite";
 
 const workers = {};
 
