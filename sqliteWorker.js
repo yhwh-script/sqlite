@@ -1,5 +1,4 @@
 import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
-import { log, info, error } from '../logger';
 
 var db = null;
 var sqlite3 = null;
@@ -22,10 +21,10 @@ onmessage = async function ({ data }) {
         postMessage({ result, type: "application/json" });
       } catch (e) {
         if (e.message.indexOf("SQLITE_CANTOPEN") != -1) {
-          info("Info: Currently no SQLite database available for this worker. Upload a new database or reload the page.");
+          console.info("Info: Currently no SQLite database available for this worker. Upload a new database or reload the page.");
         }
         if (e.message.indexOf("SQLITE_CONSTRAINT_UNIQUE") != -1) {
-          error("Error executing SQL statement", sql, e.message);
+          console.error("Error executing SQL statement", sql, e.message);
         }
       }
       break;
@@ -34,12 +33,12 @@ onmessage = async function ({ data }) {
       const { sql, values } = data;
       let stmt;
       try {
-        // console.log(sql, values);
+        // console.debug(sql, values);
         stmt = await db.prepare(sql, values);
         const columns = stmt.getColumnNames();
-        // console.log("columns", columns);
+        // console.debug("columns", columns);
         stmt.bind(values);
-        // console.log("stmt", stmt)
+        // console.debug("stmt", stmt)
         const result = [];
         while (stmt.step()) {
           let row = stmt.get([]);
@@ -49,15 +48,15 @@ onmessage = async function ({ data }) {
           let obj = Object.fromEntries(zipped);
           result.push(obj);
         }
-        // console.log("RESULT", result)
+        // console.debug("RESULT", result)
         postMessage({ result, type: "application/json" });
       } catch (e) {
         if (e.message.indexOf("SQLITE_CANTOPEN") != -1) {
-          info("Info: Currently no SQLite database available for this worker. Upload a new database or reload the page.");
+          console.info("Info: Currently no SQLite database available for this worker. Upload a new database or reload the page.");
         } else if (e.message.indexOf("SQLITE_CONSTRAINT_UNIQUE") != -1) {
-          error("Error executing SQL statement", sql, e.message);
+          console.error("Error executing SQL statement", sql, e.message);
         } else {
-          error("Error executing SQL statement", sql, e.message);
+          console.error("Error executing SQL statement", sql, e.message);
         }
       } finally {
         stmt.finalize();
@@ -67,7 +66,7 @@ onmessage = async function ({ data }) {
     case 'uploadDB':
       const { name, arrayBuffer } = data;
       const { message } = await uploadDatabase(name, arrayBuffer)
-      log(message, db);
+      console.log(message, db);
       break;
     case 'downloadDB':
       try {
@@ -78,7 +77,7 @@ onmessage = async function ({ data }) {
         if (e.message.indexOf("SQLITE_NOMEM") != -1)
           postMessage({ type: "application/vnd.sqlite3", error: "SQLITE_NOMEM" });
         else
-          error(e);
+          console.error(e);
       }
       break;
     case 'closeDB':
@@ -86,7 +85,7 @@ onmessage = async function ({ data }) {
       postMessage({ type: "closed" });
       break;
     default:
-      log(data)
+      console.log(data)
   }
 }
 
@@ -112,13 +111,13 @@ async function uploadDatabase(name, arrayBuffer) {
       throw new Error({ name: "OPFSMissingError", message: "Unsupported operation due to missing OPFS support." });
     }
   } catch (err) {
-    error(err.name, err.message);
+    console.error(err.name, err.message);
   }
 }
 
 function closeDB() {
   if (db) {
-    log("Closing...", db);
+    console.log("Closing...", db);
     db.close();
   }
 }
@@ -126,10 +125,10 @@ function closeDB() {
 async function getInstance() {
   try {
     if (!sqlite3) {
-      sqlite3 = await sqlite3InitModule({ print: log, printErr: error });
+      sqlite3 = await sqlite3InitModule({ print: console.log, printErr: console.error });
     }
     return sqlite3;
   } catch (err) {
-    error(err.name, err.message);
+    console.error(err.name, err.message);
   }
 }
